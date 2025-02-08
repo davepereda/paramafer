@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti, Mi Amor 💖</title>
+    <style>
+        /* Estilo del fondo inicial */
+        body {
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+            overflow: hidden;
+        }
+
+        /* Fondo estrellado que aparecerá al dar 'Sí' */
+        .starry-sky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: -1;
+            animation: starryAnimation 1s infinite;
+        }
+
+        /* Animación de las estrellas */
+        @keyframes starryAnimation {
+            0% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.5; }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            display: none; /* Se ocultará hasta que el ramo se haga clic */
+        }
+        
+        /* Resto del estilo se mantiene igual */
+        h1 {
+            font-size: 2.5em;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .story {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .message {
+            font-size: 1.5em;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background: white;
+            color: #ff4d6d;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #ff4d6d;
+            color: white;
+        }
+
+        .heart, .rose {
+            font-size: 2em;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .heart {
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .rose {
+            animation: heartbeat 1.5s infinite;
+            font-size: 2em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .falling-hearts, .falling-roses {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            font-size: 2em;
+            color: red;
+            opacity: 0.8;
+            animation: fall 10s linear infinite; /* Mantiene la animación cayendo infinitamente */
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .btn-container {
+            margin-top: 20px;
+        }
+
+        .btn-yes, .btn-no {
+            font-size: 1.5em;
+            margin: 10px;
+        }
+
+        .flowers {
+            font-size: 15em;
+            color: #ffea00;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: bounce 1.5s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            25% { transform: translate(-50%, -50%) scale(1.1); }
+            50% { transform: translate(-50%, -50%) scale(1); }
+            75% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .btn-lista {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background: white;
+            color: #ff4d6d;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-lista:hover {
+            background: #ff4d6d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="flowers" onclick="showContent()">💐</div> <!-- Ramo de flores interactivo -->
+    <button class="btn-lista" id="btnLista" onclick="alert('¡Toca el ramo que te hize!')">¿Estás lista?</button>
+    <div class="container">
+        <h1>Para Ti, Mi Amor 💖</h1>
+        <p class="story" id="story">Desde el primer día en que te vi, supe que eras especial. Cada momento a tu lado ha sido una historia hermosa llena de risas y amor.</p>
+        <button class="btn" id="readMoreBtn" onclick="showStory()">Seguir leyendo</button>
+        <p class="message" id="message">Eres lo mejor que me ha pasado. ¿Quieres estar conmigo para siempre? 💍</p>
+        <div class="heart" id="heart">❤️❤️❤️</div>
+        <div class="btn-container" id="responseButtons" style="display:none;">
+            <button class="btn btn-yes" onclick="respondYes()">Sí 💖</button>
+            <button class="btn btn-no" id="btnNo" onclick="respondNo()">No 💔</button>
+        </div>
+        <button class="btn" id="finalButton" onclick="showMessage()" style="display:none;">Haz clic aquí</button>
+    </div>
+    <div class="starry-sky" id="starrySky"></div> <!-- Fondo estrellado -->
+    <script>
+        function showContent() {
+            document.querySelector(".flowers").style.display = "none";  // Oculta el ramo después de hacer clic
+            document.getElementById("btnLista").style.display = "none"; // Oculta el botón ¿Estás lista?
+            document.querySelector(".container").style.display = "block";  // Muestra el contenido
+            setTimeout(() => {
+                document.getElementById("finalButton").style.display = "block";
+            }, 3000);
+        }
+        function showStory() {
+            document.getElementById("story").style.opacity = "1";
+            document.getElementById("readMoreBtn").style.display = "none";
+        }
+        function showMessage() {
+            document.getElementById("message").style.opacity = "1";
+            setTimeout(() => {
+                document.getElementById("heart").style.opacity = "1";
+                createFallingHeartsAndRoses();
+                document.getElementById("responseButtons").style.display = "block";
+                document.getElementById("starrySky").style.display = "block"; // Muestra el fondo estrellado al dar "Sí"
+            }, 1500);
+        }
+        function createFallingHeartsAndRoses() {
+            // Mantiene la animación de corazones y rosas cayendo
+            for (let i = 0; i < 20; i++) {
+                // Corazones
+                let heart = document.createElement("div");
+                heart.classList.add("falling-hearts");
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 5 + 5) + "s"; // Aumentamos el rango de duración
+                document.body.appendChild(heart);
+
+                // Rosas
+                let rose = document.createElement("div");
+                rose.classList.add("falling-roses");
+                rose.innerHTML = "🌹";
+                rose.style.left = Math.random() * 100 + "vw";
+                rose.style.animationDuration = (Math.random() * 5 + 5) + "s"; // Aumentamos el rango de duración
+                document.body.appendChild(rose);
+            }
+        }
+        function respondYes() {
+            alert("¡Sabía que dirías que sí! 💖 Te amo muchísimo.");
+            stopFalling(); // Detener las animaciones de caída
+        }
+        function respondNo() {
+            let btnNo = document.getElementById("btnNo");
+            let randomX = Math.random() * (window.innerWidth - 100);
+            let randomY = Math.random() * (window.innerHeight - 100);
+            btnNo.style.position = "absolute";
+            btnNo.style.left = randomX + "px";
+            btnNo.style.top = randomY + "px";
+            stopFalling(); // Detener las animaciones de caída
+        }
+        function stopFalling() {
+            // Detenemos la animación de caída eliminando los elementos dinámicamente
+            let fallingHearts = document.querySelectorAll('.falling-hearts');
+            let fallingRoses = document.querySelectorAll('.falling-roses');
+            fallingHearts.forEach(heart => heart.remove());
+            fallingRoses.forEach(rose => rose.remove());
+        }
+    </script>
+</body>
+</html>
